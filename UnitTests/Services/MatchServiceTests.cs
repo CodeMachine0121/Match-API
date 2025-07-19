@@ -28,6 +28,7 @@ public class MatchServiceTests
     {
         await _matchService.InsertAsync(CreateInsertMatchDto());
         await _unitOfWork.MatchRepository().Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game == "test-game"));
+        await _unitOfWork.Received(1).SaveChangesAsync();
     }
 
     [Test]
@@ -35,6 +36,7 @@ public class MatchServiceTests
     {
         await _matchService.UpdateAsync(CreateUpdateMatchDto());
         await _unitOfWork.MatchRepository().Received(1).UpdateAsync(Arg.Is<UpdateMatchDto>(i => i.Game == "update-test-game"));
+        await _unitOfWork.Received(1).SaveChangesAsync();
     }
 
     [Test]
@@ -43,6 +45,7 @@ public class MatchServiceTests
         int idToDelete = 1;
         await _matchService.DeleteAsync(idToDelete);
         await _unitOfWork.MatchRepository().Received(1).DeleteAsync(Arg.Is<int>(i => i == idToDelete));
+        await _unitOfWork.Received(1).SaveChangesAsync();
     }
 
     [Test]
@@ -71,7 +74,8 @@ public class MatchServiceTests
 
         var result = await _matchService.GetMathches();
 
-        await _matchRepository.Received(1).GetAllAsync();
+        await _unitOfWork.MatchRepository().Received(1).GetAllAsync();
+        await _unitOfWork.Received(1).SaveChangesAsync();
         Assert.That(result, Has.Count.EqualTo(1));
 
     }
@@ -120,6 +124,6 @@ public class MatchServiceTests
 
     private void GivenMatches(params MatchDomain[] matches)
     {
-        _matchService.GetMathches().Returns(matches.ToList());
+        _unitOfWork.MatchRepository().GetAllAsync().Returns(matches.ToList());
     }
 }
