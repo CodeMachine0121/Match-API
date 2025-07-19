@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
+
+using ESportsMatchTracker.API.Models.Ddmains;
+using ESportsMatchTracker.API.Models.Domains;
 
 /// <summary>
 /// 代表 "Matches" 資料庫表格。
@@ -74,4 +78,43 @@ public class Match
 
     [Column("winner_team_name")]
     public string? Winner { get; set; }
+    public MatchDomain ToMatchDomain()
+    {
+
+        return new MatchDomain
+        {
+            // --- 直接對應的簡單屬性 ---
+            Id = Id,
+            Game = Game,
+            StartTime = StartTime,
+            Status = Status,
+            Stage = Stage,
+            Tournament = Tournament,
+            StreamUrl = StreamUrl,
+            CurrentMap = CurrentMap,
+            Winner = Winner,
+
+            // --- 執行反序列化來填充複雜屬性 ---
+
+            // 反序列化 TeamsJson 成為 List<string>
+            Teams = JsonSerializer.Deserialize<List<string>>(TeamsJson),
+
+            // 組合 MatchDetailDomain 物件
+            MatchDetails = new MatchDetailDomain
+            {
+                Format = Format, // 直接從 entity 取得
+                MapPool = JsonSerializer.Deserialize<List<string>>(MapPoolJson)
+            },
+
+            // 反序列化 ScoreJson，並處理可能為 null 的情況
+            Score = ScoreJson != null
+                ? JsonSerializer.Deserialize<Dictionary<string, int>>(ScoreJson)
+                : null,
+
+            // 反序列化 MapScoresJson，並處理可能為 null 的情況
+            MapScores = MapScoresJson != null
+                ? JsonSerializer.Deserialize<List<MapScoreDomain>>(MapScoresJson)
+                : null
+        };
+    }
 }

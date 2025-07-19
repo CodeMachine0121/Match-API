@@ -7,7 +7,7 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
 {
     public void Configure(EntityTypeBuilder<Match> builder)
     {
-        builder.ToTable("Matches");
+        builder.ToTable("Match");
         builder.HasKey(m => m.Id);
         builder.Property(m => m.Id)
             .HasColumnName("id")
