@@ -1,4 +1,5 @@
 using ESportsMatchTracker.API.Controllers;
+using ESportsMatchTracker.API.Models.Ddmains;
 using ESportsMatchTracker.API.Models.ViewModels;
 using ESportsMatchTracker.API.Services.Interfaces;
 
@@ -17,6 +18,24 @@ public class MatchControllerTests
     {
         _matchService = Substitute.For<IMatchService>();
         var controller = new MatchController(_matchService);
+        _matchService.GetMathches().Returns([
+            new MathDomain
+            {
+                Id = 1,
+                Game = "test-game",
+                Teams = ["team1", "team2"],
+                Status = "scheduled",
+                Stage = "test-stage",
+                Tournament = "test-tournament",
+                StreamUrl = "test-stream-url",
+                MatchDetailsDomain = new MatchDetailsDomain
+                {
+                    Format = "test-format",
+                    MapPool = []
+                }
+            }
+        ]);
+        
         var result = (OkObjectResult) (await controller.GetMatches());
         
         await _matchService.Received(1).GetMathches();
@@ -26,6 +45,7 @@ public class MatchControllerTests
             Assert.That(result.StatusCode, Is.EqualTo(200));
             Assert.That(result.Value, Is.Not.Null);
             Assert.That(result.Value, Is.TypeOf<List<MathResponse>>());
+            Assert.That(((List<MathResponse>)result.Value!), Has.Count.EqualTo(1));
         });
     }
     

@@ -4,5 +4,5 @@ namespace ESportsMatchTracker.API.Services.Interfaces;
 
 public interface IMatchService
 {
-    Task<MathDomain> GetMathches();
+    Task<List<MathDomain>> GetMathches();
 }
