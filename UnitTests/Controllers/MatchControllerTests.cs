@@ -52,6 +52,13 @@ public class MatchControllerTests
             Assert.That((List<MathResponse>)result.Value!, Has.Count.EqualTo(1));
         });
     }
+
+    [Test]
+    public async Task should_get_201_when_insert_data()
+    {
+        var result = (CreatedResult)await _controller.InsertAsync(new InsertMatchRequest());
+        Assert.That(result.StatusCode, Is.EqualTo(201));
+    }
     private void GivenMatches(params MatchDomain[] matches)
     {
 
