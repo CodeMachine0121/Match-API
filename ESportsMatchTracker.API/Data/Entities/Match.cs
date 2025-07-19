@@ -89,11 +89,9 @@ public class Match
     public DateTime CreatedOn { get; set; }
     
     [Column("modified_by")]
-    [Required]
     public string? ModifiedBy { get; set; }
     
     [Column("modified_on")]
-    [Required]
     public DateTime ModifiedOn { get; set; }
     
     public MatchDomain ToMatchDomain()

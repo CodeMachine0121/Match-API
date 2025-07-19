@@ -50,13 +50,11 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
         builder.Property(m => m.CreatedBy)
             .HasColumnName("created_by");
         builder.Property(m => m.CreatedOn)
-            .HasColumnName("created_on")
-            .HasDefaultValueSql("GETDATE()");
+            .HasColumnName("created_on");
         builder.Property(m => m.ModifiedBy)
             .HasColumnName("modified_by");
         builder.Property(m => m.ModifiedOn)
-            .HasColumnName("modified_on")
-            .HasDefaultValueSql("GETDATE()");
+            .HasColumnName("modified_on");
                 
             
     }
