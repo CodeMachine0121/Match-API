@@ -11,7 +11,7 @@ public class MathResponse
     public string Game { get; set; }
 
     [JsonPropertyName("teams")]
-    public List<string> Teams { get; set; }
+    public List<string>? Teams { get; set; }
 
     [JsonPropertyName("startTime")]
     public DateTime StartTime { get; set; }
