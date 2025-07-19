@@ -92,7 +92,7 @@ public class Match
     public string? ModifiedBy { get; set; }
     
     [Column("modified_on")]
-    public DateTime ModifiedOn { get; set; }
+    public DateTime? ModifiedOn { get; set; }
     
     public MatchDomain ToMatchDomain()
     {

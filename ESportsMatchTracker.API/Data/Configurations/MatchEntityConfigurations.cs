@@ -55,7 +55,7 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
             .HasColumnName("modified_by");
         builder.Property(m => m.ModifiedOn)
             .HasColumnName("modified_on");
-                
-            
+
+
     }
 }

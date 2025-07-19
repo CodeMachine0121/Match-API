@@ -4,6 +4,7 @@ using ESportsMatchTracker.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ESportsMatchTracker.API.Data.Migrations
 {
     [DbContext(typeof(ESportsDbContext))]
-    partial class ESportsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250719120448_modify_table_column_for_modify_on")]
+    partial class modify_table_column_for_modify_on
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,7 @@ namespace ESportsMatchTracker.API.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("modified_by");
 
-                    b.Property<DateTime?>("ModifiedOn")
+                    b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime2")
                         .HasColumnName("modified_on");
 
