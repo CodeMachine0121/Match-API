@@ -17,4 +17,26 @@ public class InsertMatchDto
     public string? CurrentMap { get; set; }
     public string? Winner { get; set; }
     public required string Operator { get; set; }
+    public Match ToEntity()
+    {
+
+        return new Match
+        {
+            Game = Game,
+            StartTime = StartTime,
+            Status = Status,
+            Stage = Stage,
+            Tournament = Tournament,
+            StreamUrl = StreamUrl,
+            CurrentMap = CurrentMap,
+            Winner = Winner,
+            TeamsJson = TeamsJson,
+            Format = Format,
+            MapPoolJson = MapPoolJson,
+            ScoreJson = ScoreJson,
+            MapScoresJson = MapScoresJson,
+            CreatedBy = Operator,
+            CreatedOn = DateTime.UtcNow,
+        };
+    }
 }

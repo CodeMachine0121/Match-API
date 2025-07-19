@@ -25,14 +25,32 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
     }
     public Task InsertAsync(InsertMatchDto dto)
     {
-        throw new NotImplementedException();
+        dbContext.Matches.Add(dto.ToEntity());
+        
+        return dbContext.SaveChangesAsync();
+        
     }
     public Task UpdateAsync(UpdateMatchDto dto)
     {
-        throw new NotImplementedException();
+        var entity = dbContext.Matches.FirstOrDefault(m => m.Id == dto.Id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Match with ID {dto.Id} not found.");
+        }
+        entity.UpdateFromDto(dto);
+        
+        dbContext.Update(entity);
+        return dbContext.SaveChangesAsync();
     }
     public Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var entity = dbContext.Matches.FirstOrDefault(m => m.Id == id);
+        if (entity == null)
+        {
+            throw new KeyNotFoundException($"Match with ID {id} not found.");
+        }
+        
+        dbContext.Matches.Remove(entity);
+        return dbContext.SaveChangesAsync();
     }
 }

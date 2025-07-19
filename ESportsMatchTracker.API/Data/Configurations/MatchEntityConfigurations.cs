@@ -46,5 +46,18 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
             .HasColumnName("current_map");
         builder.Property(m => m.Winner)
             .HasColumnName("winner_team_name");
+        
+        builder.Property(m => m.CreatedBy)
+            .HasColumnName("created_by");
+        builder.Property(m => m.CreatedOn)
+            .HasColumnName("created_on")
+            .HasDefaultValueSql("GETDATE()");
+        builder.Property(m => m.ModifiedBy)
+            .HasColumnName("modified_by");
+        builder.Property(m => m.ModifiedOn)
+            .HasColumnName("modified_on")
+            .HasDefaultValueSql("GETDATE()");
+                
+            
     }
 }

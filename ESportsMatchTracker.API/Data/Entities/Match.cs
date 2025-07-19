@@ -6,6 +6,7 @@ using System.Text.Json;
 
 using ESportsMatchTracker.API.Models.Ddmains;
 using ESportsMatchTracker.API.Models.Domains;
+using ESportsMatchTracker.API.Models.Dtos;
 
 /// <summary>
 /// 代表 "Matches" 資料庫表格。
@@ -78,6 +79,23 @@ public class Match
 
     [Column("winner_team_name")]
     public string? Winner { get; set; }
+    
+    [Column("created_by")]
+    [Required]
+    public string CreatedBy { get; set; }
+    
+    [Column("created_on")]
+    [Required]
+    public DateTime CreatedOn { get; set; }
+    
+    [Column("modified_by")]
+    [Required]
+    public string? ModifiedBy { get; set; }
+    
+    [Column("modified_on")]
+    [Required]
+    public DateTime ModifiedOn { get; set; }
+    
     public MatchDomain ToMatchDomain()
     {
 
@@ -116,5 +134,25 @@ public class Match
                 ? JsonSerializer.Deserialize<List<MapScoreDomain>>(MapScoresJson)
                 : null
         };
+    }
+    public void UpdateFromDto(UpdateMatchDto dto)
+    {
+        Game = dto.Game;
+        TeamsJson = dto.TeamsJson;
+        StartTime = dto.StartTime;
+        Status = dto.Status;
+        Stage = dto.Stage;
+        Tournament = dto.Tournament;
+        StreamUrl = dto.StreamUrl;
+        Format = dto.Format;
+        MapPoolJson = dto.MapPoolJson;
+        ScoreJson = dto.ScoreJson;
+        MapScoresJson = dto.MapScoresJson;
+        CurrentMap = dto.CurrentMap;
+        Winner = dto.Winner;
+
+        // 更新操作員和修改時間
+        ModifiedBy = dto.Operator;
+        ModifiedOn = DateTime.UtcNow;
     }
 }

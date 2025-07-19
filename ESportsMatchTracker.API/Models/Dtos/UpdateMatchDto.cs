@@ -2,6 +2,7 @@ namespace ESportsMatchTracker.API.Models.Dtos;
 
 public class UpdateMatchDto
 {
+    public int Id { get; set; }
     public required string Game { get; set; }
     public required string TeamsJson { get; set; }
     public DateTime StartTime { get; set; }
