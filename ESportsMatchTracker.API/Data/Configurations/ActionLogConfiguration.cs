@@ -12,7 +12,7 @@ namespace ESportsMatchTracker.API.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ActionType).IsRequired().HasMaxLength(64);
             builder.Property(x => x.TableName).IsRequired().HasMaxLength(128);
-            builder.Property(x => x.Description).HasMaxLength(512);
+            builder.Property(x => x.Description).HasColumnType("nvarchar(max)");
             builder.Property(x => x.Timestamp).IsRequired();
         }
     }

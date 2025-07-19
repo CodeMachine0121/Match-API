@@ -26,9 +26,8 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
     public Task InsertAsync(InsertMatchDto dto)
     {
         dbContext.Matches.Add(dto.ToEntity());
-        
-        return dbContext.SaveChangesAsync();
-        
+        // 移除 SaveChangesAsync，让 UnitOfWork 统一提交
+        return Task.CompletedTask;
     }
     public Task UpdateAsync(UpdateMatchDto dto)
     {
@@ -38,9 +37,9 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
             throw new KeyNotFoundException($"Match with ID {dto.Id} not found.");
         }
         entity.UpdateFromDto(dto);
-        
         dbContext.Update(entity);
-        return dbContext.SaveChangesAsync();
+        // 移除 SaveChangesAsync，让 UnitOfWork 统一提交
+        return Task.CompletedTask;
     }
     public Task DeleteAsync(int id)
     {
@@ -49,8 +48,8 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
         {
             throw new KeyNotFoundException($"Match with ID {id} not found.");
         }
-        
         dbContext.Matches.Remove(entity);
-        return dbContext.SaveChangesAsync();
+        // 移除 SaveChangesAsync，让 UnitOfWork 统一提交
+        return Task.CompletedTask;
     }
 }
