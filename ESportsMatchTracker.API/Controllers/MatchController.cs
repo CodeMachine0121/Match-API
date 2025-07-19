@@ -8,6 +8,6 @@ public class MatchController: ControllerBase
 {
     public IActionResult GetMatches()
     {
-        return Ok();
+        return Ok(new List<Models.ViewModels.MathResponse>());
     }
 }
