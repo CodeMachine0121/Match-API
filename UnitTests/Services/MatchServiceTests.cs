@@ -10,28 +10,31 @@ namespace UnitTests.Services;
 [TestFixture]
 public class MatchServiceTests
 {
+    private IUnitOfWork _unitOfWork;
     private IMatchRepository _matchRepository;
     private MatchService _matchService;
 
     [SetUp]
     public void SetUp()
     {
+        _unitOfWork = Substitute.For<IUnitOfWork>();
         _matchRepository = Substitute.For<IMatchRepository>();
-        _matchService = new MatchService(_matchRepository);
+        _unitOfWork.MatchRepository().Returns(_matchRepository);
+        _matchService = new MatchService(_unitOfWork);
     }
 
     [Test]
     public async Task should_insert_data_by_repository()
     {
         await _matchService.InsertAsync(CreateInsertMatchDto());
-        await _matchRepository.Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game == "test-game"));
+        await _unitOfWork.MatchRepository().Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game == "test-game"));
     }
 
     [Test]
     public async Task should_update_data_by_repository()
     {
         await _matchService.UpdateAsync(CreateUpdateMatchDto());
-        await _matchRepository.Received(1).UpdateAsync(Arg.Is<UpdateMatchDto>(i => i.Game == "update-test-game"));
+        await _unitOfWork.MatchRepository().Received(1).UpdateAsync(Arg.Is<UpdateMatchDto>(i => i.Game == "update-test-game"));
     }
 
     [Test]
@@ -39,7 +42,7 @@ public class MatchServiceTests
     {
         int idToDelete = 1;
         await _matchService.DeleteAsync(idToDelete);
-        await _matchRepository.Received(1).DeleteAsync(Arg.Is<int>(i => i == idToDelete));
+        await _unitOfWork.MatchRepository().Received(1).DeleteAsync(Arg.Is<int>(i => i == idToDelete));
     }
 
     [Test]

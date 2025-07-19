@@ -10,11 +10,8 @@ namespace ESportsMatchTracker.API.Data.Configurations
         {
             builder.ToTable("ActionLogs");
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.UserId).IsRequired().HasMaxLength(128);
-            builder.Property(x => x.UserName).IsRequired().HasMaxLength(128);
             builder.Property(x => x.ActionType).IsRequired().HasMaxLength(64);
             builder.Property(x => x.TableName).IsRequired().HasMaxLength(128);
-            builder.Property(x => x.RecordId).IsRequired().HasMaxLength(128);
             builder.Property(x => x.Description).HasMaxLength(512);
             builder.Property(x => x.Timestamp).IsRequired();
         }
