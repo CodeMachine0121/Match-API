@@ -1,4 +1,5 @@
 using ESportsMatchTracker.API.Models.Ddmains;
+using ESportsMatchTracker.API.Models.Dtos;
 using ESportsMatchTracker.API.Repositories.Interfaces;
 using ESportsMatchTracker.API.Services;
 
@@ -18,6 +19,14 @@ public class MatchServiceTests
         _matchRepository = Substitute.For<IMatchRepository>();
         _matchService = new MatchService(_matchRepository);
     }
+
+    [Test]
+    public async Task should_insert_data_by_repository()
+    {
+        await _matchService.InsertAsync(CreateInsertMatchDto());
+        await _matchRepository.Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game =="test-game"));
+    }
+
 
     [Test]
     public async Task should_get_data_from_repository()
@@ -42,13 +51,35 @@ public class MatchServiceTests
                     MapPool = []
                 },
             });
-        
+
         var result = await _matchService.GetMathches();
-        
+
         await _matchRepository.Received(1).GetAllAsync();
         Assert.That(result, Has.Count.EqualTo(1));
-        
+
     }
+
+    private static InsertMatchDto CreateInsertMatchDto()
+    {
+        return new InsertMatchDto
+        {
+            Game = "test-game",
+            TeamsJson = "[\"team1\", \"team2\"]",
+            StartTime = DateTime.UtcNow,
+            Status = "scheduled",
+            Stage = "test-stage",
+            Tournament = "test-tournament",
+            StreamUrl = "test-stream-url",
+            Format = "test-format",
+            MapPoolJson = "[]",
+            ScoreJson = "{\"Team Alpha\": 2, \"Team Omega\": 0}",
+            MapScoresJson = "[]",
+            CurrentMap = "Map1",
+            Winner = "Team Alpha",
+            Operator = "test-operator"
+        };
+    }
+
 
     private void GivenMatches(params MatchDomain[] matches)
     {

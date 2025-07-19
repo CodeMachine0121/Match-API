@@ -3,6 +3,7 @@ using System.Text.Json;
 using ESportsMatchTracker.API.Data;
 using ESportsMatchTracker.API.Models.Ddmains;
 using ESportsMatchTracker.API.Models.Domains;
+using ESportsMatchTracker.API.Models.Dtos;
 using ESportsMatchTracker.API.Repositories.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
@@ -21,5 +22,9 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
             .Select(entity => entity.ToMatchDomain())
             .ToListAsync();
         return domains;
+    }
+    public Task InsertAsync(InsertMatchDto dto)
+    {
+        throw new NotImplementedException();
     }
 }

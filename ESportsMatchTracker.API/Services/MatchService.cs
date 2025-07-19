@@ -11,8 +11,8 @@ public class MatchService(IMatchRepository matchRepository) : IMatchService
     {
         return await matchRepository.GetAllAsync();
     }
-    public Task InsertAsync(InsertMatchDto dto)
+    public async Task InsertAsync(InsertMatchDto dto)
     {
-        throw new NotImplementedException();
+        await matchRepository.InsertAsync(dto);
     }
 }
