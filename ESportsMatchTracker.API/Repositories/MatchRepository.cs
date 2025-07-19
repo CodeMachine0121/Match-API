@@ -31,4 +31,8 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
     {
         throw new NotImplementedException();
     }
+    public Task DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -34,6 +34,13 @@ public class MatchServiceTests
         await _matchRepository.Received(1).UpdateAsync(Arg.Is<UpdateMatchDto>(i => i.Game == "update-test-game"));
     }
 
+    [Test]
+    public async Task should_delete_data_by_repository()
+    {
+        int idToDelete = 1;
+        await _matchService.DeleteAsync(idToDelete);
+        await _matchRepository.Received(1).DeleteAsync(Arg.Is<int>(i => i == idToDelete));
+    }
 
     [Test]
     public async Task should_get_data_from_repository()

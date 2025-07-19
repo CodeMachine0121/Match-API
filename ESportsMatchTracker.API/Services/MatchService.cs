@@ -19,4 +19,8 @@ public class MatchService(IMatchRepository matchRepository) : IMatchService
     {
         await matchRepository.UpdateAsync(dto);
     }
+    public async Task DeleteAsync(int id)
+    {
+        await matchRepository.DeleteAsync(id);
+    }
 }

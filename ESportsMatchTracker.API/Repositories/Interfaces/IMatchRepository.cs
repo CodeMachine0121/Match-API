@@ -8,4 +8,5 @@ public interface IMatchRepository
     Task<List<MatchDomain>> GetAllAsync();
     Task InsertAsync(InsertMatchDto dto);
     Task UpdateAsync(UpdateMatchDto dto);
+    Task DeleteAsync(int id);
 }

@@ -38,4 +38,9 @@ public class MatchController(IMatchService matchService) : ControllerBase
         await matchService.UpdateAsync(request.ToDto());
         return Ok();
     }
+    public async Task<OkResult> DeleteAsync(int id)
+    {
+        await matchService.DeleteAsync(id);
+        return Ok();
+    }
 }

@@ -70,6 +70,15 @@ public class MatchControllerTests
         await _matchService.Received().UpdateAsync(Arg.Is<UpdateMatchDto>(x => x.Game == "update-test-game"));
         Assert.That(result.StatusCode, Is.EqualTo(200));
     }
+
+    [Test]
+    public async Task should_get_200_when_delete_data()
+    {
+        int idToDelete = 1;
+        var result = (OkResult)await _controller.DeleteAsync(1);
+        await _matchService.Received().DeleteAsync(Arg.Is<int>(x => x == idToDelete));
+        Assert.That(result.StatusCode, Is.EqualTo(200));
+    }
     
     private UpdateMatchRequest CreateUpdateMatchRequest()
     {
