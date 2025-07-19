@@ -33,11 +33,15 @@ public class MatchController(IMatchService matchService) : ControllerBase
         await matchService.InsertAsync(request.ToDto());
         return Created();
     }
+    
+    [HttpPut("")]
     public async Task<OkResult> UpdateAsync(UpdateMatchRequest request)
     {
         await matchService.UpdateAsync(request.ToDto());
         return Ok();
     }
+    
+    [HttpDelete("{id:int}")]
     public async Task<OkResult> DeleteAsync(int id)
     {
         await matchService.DeleteAsync(id);
