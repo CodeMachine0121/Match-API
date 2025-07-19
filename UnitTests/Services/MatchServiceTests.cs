@@ -24,7 +24,14 @@ public class MatchServiceTests
     public async Task should_insert_data_by_repository()
     {
         await _matchService.InsertAsync(CreateInsertMatchDto());
-        await _matchRepository.Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game =="test-game"));
+        await _matchRepository.Received(1).InsertAsync(Arg.Is<InsertMatchDto>(i => i.Game == "test-game"));
+    }
+
+    [Test]
+    public async Task should_update_data_by_repository()
+    {
+        await _matchService.UpdateAsync(CreateUpdateMatchDto());
+        await _matchRepository.Received(1).UpdateAsync(Arg.Is<UpdateMatchDto>(i => i.Game == "update-test-game"));
     }
 
 
@@ -49,7 +56,7 @@ public class MatchServiceTests
                 {
                     Format = "test-format",
                     MapPool = []
-                },
+                }
             });
 
         var result = await _matchService.GetMathches();
@@ -57,6 +64,26 @@ public class MatchServiceTests
         await _matchRepository.Received(1).GetAllAsync();
         Assert.That(result, Has.Count.EqualTo(1));
 
+    }
+    private UpdateMatchDto CreateUpdateMatchDto()
+    {
+        return new UpdateMatchDto
+        {
+            Game = "update-test-game",
+            TeamsJson = "[\"team1\", \"team2\"]",
+            StartTime = DateTime.UtcNow,
+            Status = "scheduled",
+            Stage = "test-stage",
+            Tournament = "test-tournament",
+            StreamUrl = "test-stream-url",
+            Format = "test-format",
+            MapPoolJson = "[]",
+            ScoreJson = "{\"Team Alpha\": 2, \"Team Omega\": 0}",
+            MapScoresJson = "[]",
+            CurrentMap = "Map1",
+            Winner = "Team Alpha",
+            Operator = "test-operator"
+        };
     }
 
     private static InsertMatchDto CreateInsertMatchDto()

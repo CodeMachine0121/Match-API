@@ -27,4 +27,8 @@ public class MatchRepository(ESportsDbContext dbContext) : IMatchRepository
     {
         throw new NotImplementedException();
     }
+    public Task UpdateAsync(UpdateMatchDto dto)
+    {
+        throw new NotImplementedException();
+    }
 }
