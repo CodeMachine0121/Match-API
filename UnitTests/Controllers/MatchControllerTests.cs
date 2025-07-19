@@ -1,5 +1,6 @@
 using ESportsMatchTracker.API.Controllers;
 using ESportsMatchTracker.API.Models.Ddmains;
+using ESportsMatchTracker.API.Models.Dtos;
 using ESportsMatchTracker.API.Models.ViewModels;
 using ESportsMatchTracker.API.Services.Interfaces;
 
@@ -56,8 +57,31 @@ public class MatchControllerTests
     [Test]
     public async Task should_get_201_when_insert_data()
     {
-        var result = (CreatedResult)await _controller.InsertAsync(new InsertMatchRequest());
+        var result = (CreatedResult)await _controller.InsertAsync(CreateInsertMatchRequest());
+        await _matchService.Received().InsertAsync(Arg.Is<InsertMatchDto>(x=> x.Game == "test-game"));
+        
         Assert.That(result.StatusCode, Is.EqualTo(201));
+    }
+    
+    private static InsertMatchRequest CreateInsertMatchRequest()
+    {
+
+        return new InsertMatchRequest
+        {
+            Game = "test-game",
+            TeamsJson = "[\"team1\", \"team2\"]",
+            StartTime = DateTime.UtcNow,
+            Status = "scheduled",
+            Stage = "test-stage",
+            Tournament = "test-tournament",
+            StreamUrl = "test-stream-url",
+            Format = "test-format",
+            MapPoolJson = "[]",
+            ScoreJson = "{\"Team Alpha\": 2, \"Team Omega\": 0}",
+            MapScoresJson = "[]",
+            CurrentMap = "Map1",
+            Winner = "Team Alpha"
+        };
     }
     private void GivenMatches(params MatchDomain[] matches)
     {

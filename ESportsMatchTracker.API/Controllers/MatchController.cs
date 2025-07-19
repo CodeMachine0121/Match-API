@@ -1,3 +1,4 @@
+using ESportsMatchTracker.API.Models.Dtos;
 using ESportsMatchTracker.API.Models.ViewModels;
 using ESportsMatchTracker.API.Services.Interfaces;
 
@@ -26,8 +27,9 @@ public class MatchController(IMatchService matchService) : ControllerBase
             MatchDetails = x.MatchDetails.ToResponse(),
         }).ToList());
     }
-    public async Task<IActionResult> InsertAsync(InsertMatchRequest insertMatchRequest)
+    public async Task<IActionResult> InsertAsync(InsertMatchRequest request)
     {
+        await matchService.InsertAsync(request.ToDto());
         return Created();
     }
 }
