@@ -1,12 +1,16 @@
+using ESportsMatchTracker.API.Data;
 using ESportsMatchTracker.API.Repositories;
 using ESportsMatchTracker.API.Repositories.Interfaces;
 using ESportsMatchTracker.API.Services;
 using ESportsMatchTracker.API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<ESportsDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<IMatchService, MatchService>();
 builder.Services.AddTransient<IMatchRepository, MatchRepository>();
 
