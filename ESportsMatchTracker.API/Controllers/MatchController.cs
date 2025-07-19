@@ -27,6 +27,8 @@ public class MatchController(IMatchService matchService) : ControllerBase
             MatchDetails = x.MatchDetails.ToResponse(),
         }).ToList());
     }
+    
+    [HttpPost("")]
     public async Task<IActionResult> InsertAsync(InsertMatchRequest request)
     {
         await matchService.InsertAsync(request.ToDto());
