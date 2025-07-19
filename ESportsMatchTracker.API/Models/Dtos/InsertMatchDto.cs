@@ -16,4 +16,5 @@ public class InsertMatchDto
     public string? MapScoresJson { get; set; }
     public string? CurrentMap { get; set; }
     public string? Winner { get; set; }
+    public required string Operator { get; set; }
 }

@@ -44,6 +44,8 @@ public class InsertMatchRequest
 
     [JsonPropertyName("winner")]
     public string? Winner { get; set; }
+    [JsonPropertyName("operator")]
+    public string Operator { get; set; }
     public InsertMatchDto ToDto()
     {
 
@@ -61,7 +63,8 @@ public class InsertMatchRequest
             ScoreJson = ScoreJson,
             MapScoresJson = MapScoresJson,
             CurrentMap = CurrentMap,
-            Winner = Winner
+            Winner = Winner,
+            Operator = Operator
         };
     }
 }
