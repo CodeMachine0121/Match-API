@@ -7,4 +7,5 @@ public interface IMatchService
 {
     Task<List<MatchDomain>> GetMathches();
     Task InsertAsync(InsertMatchDto dto);
+    Task UpdateAsync(UpdateMatchDto dto);
 }

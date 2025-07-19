@@ -4,7 +4,7 @@ using ESportsMatchTracker.API.Models.Dtos;
 
 namespace ESportsMatchTracker.API.Models.ViewModels;
 
-public class InsertMatchRequest
+public class UpdateMatchRequest
 {
     [JsonPropertyName("game")]
     public string Game { get; set; }
@@ -46,10 +46,10 @@ public class InsertMatchRequest
     public string? Winner { get; set; }
     [JsonPropertyName("operator")]
     public required string Operator { get; set; }
-    public InsertMatchDto ToDto()
+    
+    public UpdateMatchDto ToDto()
     {
-
-        return new InsertMatchDto
+        return new UpdateMatchDto
         {
             Game = Game,
             TeamsJson = TeamsJson,

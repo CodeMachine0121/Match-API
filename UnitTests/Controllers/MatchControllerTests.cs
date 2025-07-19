@@ -58,11 +58,40 @@ public class MatchControllerTests
     public async Task should_get_201_when_insert_data()
     {
         var result = (CreatedResult)await _controller.InsertAsync(CreateInsertMatchRequest());
-        await _matchService.Received().InsertAsync(Arg.Is<InsertMatchDto>(x=> x.Game == "test-game"));
-        
+        await _matchService.Received().InsertAsync(Arg.Is<InsertMatchDto>(x => x.Game == "test-game"));
+
         Assert.That(result.StatusCode, Is.EqualTo(201));
     }
+
+    [Test]
+    public async Task should_get_200_when_update_data()
+    {
+        var result = (OkResult)await _controller.UpdateAsync(CreateUpdateMatchRequest());
+        await _matchService.Received().UpdateAsync(Arg.Is<UpdateMatchDto>(x => x.Game == "update-test-game"));
+        Assert.That(result.StatusCode, Is.EqualTo(200));
+    }
     
+    private UpdateMatchRequest CreateUpdateMatchRequest()
+    {
+        return new UpdateMatchRequest
+        {
+            Game = "update-test-game",
+            TeamsJson = "[\"team1\", \"team2\"]",
+            StartTime = DateTime.UtcNow,
+            Status = "scheduled",
+            Stage = "test-stage",
+            Tournament = "test-tournament",
+            StreamUrl = "test-stream-url",
+            Format = "test-format",
+            MapPoolJson = "[]",
+            ScoreJson = "{\"Team Alpha\": 2, \"Team Omega\": 0}",
+            MapScoresJson = "[]",
+            CurrentMap = "Map1",
+            Winner = "Team Alpha",
+            Operator = "test-operator"
+        };
+    }
+
     private static InsertMatchRequest CreateInsertMatchRequest()
     {
 
@@ -80,12 +109,12 @@ public class MatchControllerTests
             ScoreJson = "{\"Team Alpha\": 2, \"Team Omega\": 0}",
             MapScoresJson = "[]",
             CurrentMap = "Map1",
-            Winner = "Team Alpha"
+            Winner = "Team Alpha",
+            Operator = "test-operator"
         };
     }
     private void GivenMatches(params MatchDomain[] matches)
     {
-
         _matchService.GetMathches().Returns(matches.ToList());
     }
 }

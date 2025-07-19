@@ -1,4 +1,3 @@
-using ESportsMatchTracker.API.Models.Dtos;
 using ESportsMatchTracker.API.Models.ViewModels;
 using ESportsMatchTracker.API.Services.Interfaces;
 
@@ -33,5 +32,10 @@ public class MatchController(IMatchService matchService) : ControllerBase
     {
         await matchService.InsertAsync(request.ToDto());
         return Created();
+    }
+    public async Task<OkResult> UpdateAsync(UpdateMatchRequest request)
+    {
+        await matchService.UpdateAsync(request.ToDto());
+        return Ok();
     }
 }
