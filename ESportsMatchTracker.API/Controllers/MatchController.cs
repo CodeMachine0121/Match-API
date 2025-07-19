@@ -9,6 +9,7 @@ namespace ESportsMatchTracker.API.Controllers;
 [Route("api/v1/{contorller}")]
 public class MatchController(IMatchService matchService) : ControllerBase
 {
+    [HttpGet("all")]
     public async Task<IActionResult> GetMatches()
     {
         var mathches = await matchService.GetMathches();
