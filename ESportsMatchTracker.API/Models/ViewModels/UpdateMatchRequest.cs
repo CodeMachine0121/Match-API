@@ -6,6 +6,8 @@ namespace ESportsMatchTracker.API.Models.ViewModels;
 
 public class UpdateMatchRequest
 {
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
     [JsonPropertyName("game")]
     public string Game { get; set; }
 
@@ -51,6 +53,7 @@ public class UpdateMatchRequest
     {
         return new UpdateMatchDto
         {
+            Id = Id,
             Game = Game,
             TeamsJson = TeamsJson,
             StartTime = StartTime,
