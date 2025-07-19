@@ -12,41 +12,49 @@ namespace UnitTests.Controllers;
 [TestFixture]
 public class MatchControllerTests
 {
+    private MatchController _controller;
     private IMatchService _matchService;
+    [SetUp]
+    public void SetUp()
+    {
+        _matchService = Substitute.For<IMatchService>();
+        _controller = new MatchController(_matchService);
+    }
+
     [Test]
     public async Task should_get_ok_with_right_response()
     {
-        _matchService = Substitute.For<IMatchService>();
-        var controller = new MatchController(_matchService);
-        _matchService.GetMathches().Returns([
-            new MathDomain
+        GivenMatches(new MathDomain
+        {
+            Id = 1,
+            Game = "test-game",
+            Teams = ["team1", "team2"],
+            Status = "scheduled",
+            Stage = "test-stage",
+            Tournament = "test-tournament",
+            StreamUrl = "test-stream-url",
+            MatchDetailsDomain = new MatchDetailsDomain
             {
-                Id = 1,
-                Game = "test-game",
-                Teams = ["team1", "team2"],
-                Status = "scheduled",
-                Stage = "test-stage",
-                Tournament = "test-tournament",
-                StreamUrl = "test-stream-url",
-                MatchDetailsDomain = new MatchDetailsDomain
-                {
-                    Format = "test-format",
-                    MapPool = []
-                }
+                Format = "test-format",
+                MapPool = []
             }
-        ]);
-        
-        var result = (OkObjectResult) (await controller.GetMatches());
-        
+        });
+
+        var result = (OkObjectResult)await _controller.GetMatches();
+
         await _matchService.Received(1).GetMathches();
-      
+
         Assert.Multiple(() =>
         {
             Assert.That(result.StatusCode, Is.EqualTo(200));
             Assert.That(result.Value, Is.Not.Null);
             Assert.That(result.Value, Is.TypeOf<List<MathResponse>>());
-            Assert.That(((List<MathResponse>)result.Value!), Has.Count.EqualTo(1));
+            Assert.That((List<MathResponse>)result.Value!, Has.Count.EqualTo(1));
         });
     }
-    
+    private void GivenMatches(params MathDomain[] matches)
+    {
+
+        _matchService.GetMathches().Returns(matches.ToList());
+    }
 }
