@@ -3,7 +3,6 @@ using ESportsMatchTracker.API.Data.Entities;
 using ESportsMatchTracker.API.Repositories.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ESportsMatchTracker.API.Repositories;
 
@@ -21,13 +20,14 @@ public class UnitOfWork(
     public async Task SaveChangesAsync()
     {
         logger.LogInformation("Start saving changes to database...");
-        
+
         // 详细日志：遍历所有被跟踪的实体变更
         var entries = dbContext.ChangeTracker.Entries()
-            .Where(e => 
+            .Where(e =>
                 e.State is EntityState.Added
-                or EntityState.Modified
-                or EntityState.Deleted)
+                    or EntityState.Unchanged
+                    or EntityState.Modified
+                    or EntityState.Deleted)
             .ToList();
 
         foreach (var entry in entries)
@@ -38,9 +38,19 @@ public class UnitOfWork(
 
             switch (entry.State)
             {
+                case EntityState.Unchanged:
+                    string getValue = string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}='{p.CurrentValue}'"));
+                    await dbContext.ActionLogs.AddAsync(new ActionLog
+                    {
+                        ActionType = entry.State.ToString(),
+                        TableName = entityName,
+                        Description = $"[Unchanged] {entityName}:: {keyInfo} | Values: {getValue}",
+                        Timestamp = DateTime.UtcNow
+                    });
+                    break;
                 case EntityState.Added:
                     // 记录所有属性的当前值
-                    var addedValues = string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}='{p.CurrentValue}'"));
+                    string addedValues = string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}='{p.CurrentValue}'"));
                     await dbContext.ActionLogs.AddAsync(new ActionLog
                     {
                         ActionType = entry.State.ToString(),
@@ -51,7 +61,7 @@ public class UnitOfWork(
                     break;
                 case EntityState.Deleted:
                     // 记录所有属性的原始值
-                    var deletedValues = string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}='{p.OriginalValue}'"));
+                    string deletedValues = string.Join(", ", entry.Properties.Select(p => $"{p.Metadata.Name}='{p.OriginalValue}'"));
                     await dbContext.ActionLogs.AddAsync(new ActionLog
                     {
                         ActionType = entry.State.ToString(),
