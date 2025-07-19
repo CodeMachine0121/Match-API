@@ -23,11 +23,7 @@ public class MatchController(IMatchService matchService) : ControllerBase
             Stage = x.Stage,
             Tournament = x.Tournament,
             StreamUrl = x.StreamUrl,
-            MatchDetails = new MatchDetailsResponse()
-            {
-                Format = x.MatchDetailsDomain.Format,
-                MapPool = x.MatchDetailsDomain.MapPool
-            }
+            MatchDetails = x.MatchDetails.ToResponse(),
         }).ToList());
     }
 }

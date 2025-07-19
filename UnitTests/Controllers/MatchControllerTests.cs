@@ -24,7 +24,7 @@ public class MatchControllerTests
     [Test]
     public async Task should_get_ok_with_right_response()
     {
-        GivenMatches(new MathDomain
+        GivenMatches(new MatchDomain
         {
             Id = 1,
             Game = "test-game",
@@ -33,7 +33,7 @@ public class MatchControllerTests
             Stage = "test-stage",
             Tournament = "test-tournament",
             StreamUrl = "test-stream-url",
-            MatchDetailsDomain = new MatchDetailsDomain
+            MatchDetails = new MatchDetailDomain
             {
                 Format = "test-format",
                 MapPool = []
@@ -52,7 +52,7 @@ public class MatchControllerTests
             Assert.That((List<MathResponse>)result.Value!, Has.Count.EqualTo(1));
         });
     }
-    private void GivenMatches(params MathDomain[] matches)
+    private void GivenMatches(params MatchDomain[] matches)
     {
 
         _matchService.GetMathches().Returns(matches.ToList());

@@ -23,20 +23,24 @@ public class MatchServiceTests
     public async Task should_get_data_from_repository()
     {
         GivenMatches(
-            new MathDomain
+            new MatchDomain
             {
                 Id = 1,
                 Game = "test-game",
-                Teams = ["team1", "team2"],
+                Teams =
+                [
+                    "team1",
+                    "team2"
+                ],
                 Status = "scheduled",
                 Stage = "test-stage",
                 Tournament = "test-tournament",
                 StreamUrl = "test-stream-url",
-                MatchDetailsDomain = new MatchDetailsDomain
+                MatchDetails = new MatchDetailDomain
                 {
                     Format = "test-format",
                     MapPool = []
-                }
+                },
             });
         
         var result = await _matchService.GetMathches();
@@ -46,7 +50,7 @@ public class MatchServiceTests
         
     }
 
-    private void GivenMatches(params MathDomain[] matches)
+    private void GivenMatches(params MatchDomain[] matches)
     {
         _matchService.GetMathches().Returns(matches.ToList());
     }

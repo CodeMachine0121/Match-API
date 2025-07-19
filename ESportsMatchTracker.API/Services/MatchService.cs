@@ -6,7 +6,7 @@ namespace ESportsMatchTracker.API.Services;
 
 public class MatchService(IMatchRepository matchRepository) : IMatchService
 {
-    public async Task<List<MathDomain>> GetMathches()
+    public async Task<List<MatchDomain>> GetMathches()
     {
         return await matchRepository.GetAllAsync();
     }

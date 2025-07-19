@@ -4,5 +4,5 @@ namespace ESportsMatchTracker.API.Repositories.Interfaces;
 
 public interface IMatchRepository
 {
-    Task<List<MathDomain>> GetAllAsync();
+    Task<List<MatchDomain>> GetAllAsync();
 }

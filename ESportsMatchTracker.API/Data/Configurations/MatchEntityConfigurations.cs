@@ -1,36 +1,50 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ESportsMatchTracker.API.Data.Entities;
 
 namespace ESportsMatchTracker.API.Data.Configurations;
-
-public class MatchDetailsConfiguration : IEntityTypeConfiguration<MatchDetails>
-{
-    public void Configure(EntityTypeBuilder<MatchDetails> builder)
-    {
-        builder.ToTable("MatchDetails");
-        builder.HasKey(md => md.Id);
-        builder.Property(md => md.Format).IsRequired();
-        builder.Property(md => md.MapPoolJson).IsRequired();
-    }
-}
 
 public class MatchConfiguration : IEntityTypeConfiguration<Match>
 {
     public void Configure(EntityTypeBuilder<Match> builder)
     {
-        builder.ToTable("Match");
+        builder.ToTable("Matches");
         builder.HasKey(m => m.Id);
-        builder.Property(m => m.Game).IsRequired();
-        builder.Property(m => m.TeamsJson).IsRequired();
-        builder.Property(m => m.Status).IsRequired();
-        builder.Property(m => m.Stage).IsRequired();
-        builder.Property(m => m.Tournament).IsRequired();
-        builder.Property(m => m.StreamUrl).IsRequired();
-        builder.HasOne(m => m.MatchDetails)
-               .WithMany(md => md.Matches)
-               .HasForeignKey(m => m.MatchDetailsId)
-               .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(m => m.Id)
+            .HasColumnName("id")
+            .ValueGeneratedOnAdd();
+        builder.Property(m => m.Game)
+            .HasColumnName("game")
+            .IsRequired();
+        builder.Property(m => m.TeamsJson)
+            .HasColumnName("teams_json")
+            .IsRequired();
+        builder.Property(m => m.StartTime)
+            .HasColumnName("start_time");
+        builder.Property(m => m.Status)
+            .HasColumnName("status")
+            .IsRequired();
+        builder.Property(m => m.Stage)
+            .HasColumnName("stage")
+            .IsRequired();
+        builder.Property(m => m.Tournament)
+            .HasColumnName("tournament_name")
+            .IsRequired();
+        builder.Property(m => m.StreamUrl)
+            .HasColumnName("stream_url")
+            .IsRequired();
+        builder.Property(m => m.Format)
+            .HasColumnName("format")
+            .IsRequired();
+        builder.Property(m => m.MapPoolJson)
+            .HasColumnName("map_pool_json")
+            .IsRequired();
+        builder.Property(m => m.ScoreJson)
+            .HasColumnName("overall_score_json");
+        builder.Property(m => m.MapScoresJson)
+            .HasColumnName("map_scores_json");
+        builder.Property(m => m.CurrentMap)
+            .HasColumnName("current_map");
+        builder.Property(m => m.Winner)
+            .HasColumnName("winner_team_name");
     }
 }
-

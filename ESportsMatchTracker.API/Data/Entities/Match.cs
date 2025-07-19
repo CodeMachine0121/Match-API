@@ -3,99 +3,75 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ESportsMatchTracker.API.Data.Entities;
-
 /// <summary>
-/// 比赛实体，包含比赛的基本信息和外键信息。
+/// 代表 "Matches" 資料庫表格。
+/// 這是我們唯一的資料表，它包含了所有資訊。
 /// </summary>
+[Table("Matches")]
 public class Match
 {
-  [Key]
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-  public int Id { get; set; }
+    /// <summary>
+    /// 主鍵 (Primary Key)。
+    /// </summary>
+    [Key]
+    [Column("id")]
+    public int Id { get; set; }
 
-  /// <summary>
-  /// 游戏名称
-  /// </summary>
-  [Required]
-  public string Game { get; set; } = null!;
+    [Column("game")]
+    public string Game { get; set; }
 
-  /// <summary>
-  /// 参赛队伍，存储为JSON字符串
-  /// </summary>
-  [Required]
-  public string TeamsJson { get; set; } = null!;
+    /// <summary>
+    /// 對於 List<string>，最簡單的方法是將其序列化為 JSON 字串儲存。
+    /// 資料庫欄位類型會是 NVARCHAR(MAX) 或 JSON。
+    /// </summary>
+    [Column("teams_json")]
+    public string TeamsJson { get; set; } // 原本是 List<string> Teams
 
-  /// <summary>
-  /// 比赛开始时间
-  /// </summary>
-  public DateTime StartTime { get; set; }
+    [Column("start_time")]
+    public DateTime StartTime { get; set; }
 
-  /// <summary>
-  /// 比赛状态
-  /// </summary>
-  [Required]
-  public string Status { get; set; } = null!;
+    [Column("status")]
+    public string Status { get; set; }
 
-  /// <summary>
-  /// 比赛阶段
-  /// </summary>
-  [Required]
-  public string Stage { get; set; } = null!;
+    [Column("stage")]
+    public string Stage { get; set; }
 
-  /// <summary>
-  /// 所属锦标赛
-  /// </summary>
-  [Required]
-  public string Tournament { get; set; } = null!;
+    [Column("tournament_name")]
+    public string Tournament { get; set; }
 
-  /// <summary>
-  /// 直播流地址
-  /// </summary>
-  [Required]
-  public string StreamUrl { get; set; } = null!;
+    [Column("stream_url")]
+    public string StreamUrl { get; set; }
 
-  /// <summary>
-  /// 当前地图（仅直播时有）
-  /// </summary>
-  public string? CurrentMap { get; set; }
+    // --- 處理巢狀物件 MatchDetails ---
+    // MatchDetails 的屬性會被直接放到 Matches 表格中。
 
-  /// <summary>
-  /// 当前比分（仅直播和已结束时有），存储为JSON字符串
-  /// </summary>
-  public string? ScoreJson { get; set; }
+    [Column("format")]
+    public string Format { get; set; } // 來自 MatchDetails.Format
 
-  /// <summary>
-  /// 每张地图比分（仅直播和已结束时有），存储为JSON字符串
-  /// </summary>
-  public string? MapScoresJson { get; set; }
+    /// <summary>
+    /// MapPool 同樣序列化為 JSON 字串。
+    /// </summary>
+    [Column("map_pool_json")]
+    public string MapPoolJson { get; set; } // 來自 MatchDetails.MapPool
 
-  /// <summary>
-  /// 获胜方（仅已结束时有）
-  /// </summary>
-  public string? Winner { get; set; }
+    // --- 處理其他狀態的欄位 ---
 
-  /// <summary>
-  /// 外键，关联MatchDetails
-  /// </summary>
-  [ForeignKey("MatchDetails")]
-  public int MatchDetailsId { get; set; }
-  public MatchDetails MatchDetails { get; set; } = null!;
+    /// <summary>
+    /// Dictionary<string, int> 也序列化為 JSON 字串。
+    /// 例如: "{ \"Team Alpha\": 2, \"Team Omega\": 0 }"
+    /// </summary>
+    [Column("overall_score_json")]
+    public string? ScoreJson { get; set; } // 原本是 Dictionary<string, int>? Score
 
-  /// <summary>
-  /// 创建时间
-  /// </summary>
-  public DateTime CreatedOn { get; set; }
-  /// <summary>
-  /// 创建人
-  /// </summary>
-  public string? CreatedBy { get; set; }
-  /// <summary>
-  /// 修改时间
-  /// </summary>
-  public DateTime? ModifiedOn { get; set; }
-  /// <summary>
-  /// 修改人
-  /// </summary>
-  public string? ModifiedBy { get; set; }
+    /// <summary>
+    /// 整個 MapScore 列表同樣序列化為 JSON 字串。
+    /// </summary>
+    [Column("map_scores_json")]
+    public string? MapScoresJson { get; set; } // 原本是 List<MapScore>? MapScores
+
+    [Column("current_map")]
+    public string? CurrentMap { get; set; }
+
+    [Column("winner_team_name")]
+    public string? Winner { get; set; }
 }
