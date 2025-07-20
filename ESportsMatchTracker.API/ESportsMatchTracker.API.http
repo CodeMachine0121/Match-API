@@ -1,6 +1,73 @@
-@ESportsMatchTracker.API_HostAddress = http://localhost:5105
+@baseUrl = http://localhost:5105/api/v1
 
-GET {{ESportsMatchTracker.API_HostAddress}}/weatherforecast/
-Accept: application/json
+# @name baseUrl
+# 變數：請將此處的 URL 替換成您的 API 端點
+GET {{baseUrl}}/match/all
+
 
 ###
+# @name CreateScheduledMatch
+POST {{baseUrl}}/match
+Content-Type: application/json
+
+{
+  "game": "Valorant",
+  "teamsJson": "[\"Team Alpha\",\"Team Omega\"]",
+  "startTime": "2025-06-20T17:00:00Z",
+  "status": "scheduled",
+  "stage": "Group Stage",
+  "tournament": "VCT Masters 2025",
+  "streamUrl": "https://steamurl.com",
+  "format": "Best of 3",
+  "mapPoolJson": "[\"Ascent\",\"Bind\",\"Haven\"]",
+  "scoreJson": null,
+  "mapScoresJson": null,
+  "currentMap": null,
+  "winner": null,
+  "operator": "James"
+}
+
+###
+# @name CreateEndedMatch
+POST {{baseUrl}}/match
+Content-Type: application/json
+
+{
+  "game": "Valorant",
+  "teamsJson": "[\"Team Alpha\",\"Team Omega\"]",
+  "startTime": "2025-06-20T17:00:00Z",
+  "status": "ended",
+  "stage": "Group Stage",
+  "tournament": "VCT Masters 2025",
+  "streamUrl": "https://twitch.tv/vct",
+  "format": "Best of 3",
+  "mapPoolJson": "[\"Ascent\",\"Bind\",\"Haven\"]",
+  "scoreJson": "{\"Team Alpha\":2,\"Team Omega\":0}",
+  "mapScoresJson": "[{\"map\":\"Ascent\",\"score\":{\"Team Alpha\":13,\"Team Omega\":9}},{\"map\":\"Bind\",\"score\":{\"Team Alpha\":13,\"Team Omega\":8}}]",
+  "currentMap": null,
+  "winner": "Team Alpha",
+  "operator": "James"
+}
+
+###
+# @name CreateLiveMatch
+POST {{baseUrl}}/match
+Content-Type: application/json
+
+{
+  "game": "Valorant",
+  "teamsJson": "[\"Team Alpha\",\"Team Omega\"]",
+  "startTime": "2025-06-20T17:00:00Z",
+  "status": "live",
+  "stage": "Group Stage",
+  "tournament": "VCT Masters 2025",
+  "streamUrl": "https://steamurl.com",
+  "format": "Best of 3",
+  "mapPoolJson": "[\"Ascent\",\"Bind\",\"Haven\"]",
+  "scoreJson": "{\"Team Alpha\":1,\"Team Omega\":0}",
+  "mapScoresJson": "[{\"map\":\"Ascent\",\"score\":{\"Team Alpha\":13,\"Team Omega\":9}},{\"map\":\"Bind\",\"score\":{\"Team Alpha\":4,\"Team Omega\":2}}]",
+  "currentMap": "Bind",
+  "winner": null,
+  "operator": "James"
+}
+
