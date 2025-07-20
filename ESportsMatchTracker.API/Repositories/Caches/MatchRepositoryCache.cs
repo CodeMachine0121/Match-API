@@ -19,7 +19,7 @@ public class MatchRepositoryCache(IMemoryCache memoryCache, IMatchRepository rep
             return JsonSerializer.Deserialize<List<MatchDomain>>(matchesString)!;
         }
         var matches = await repository.GetAllAsync();
-        memoryCache.Set(CacheKeyForMatchAll, JsonSerializer.Serialize(matches), TimeSpan.FromMinutes(10));
+        memoryCache.Set(CacheKeyForMatchAll, JsonSerializer.Serialize(matches), TimeSpan.FromMinutes(5));
         return matches;
     }
     public async Task InsertAsync(InsertMatchDto dto)
